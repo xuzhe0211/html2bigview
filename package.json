@@ -1,0 +1,33 @@
+{
+  "name": "@ali/x-tool",
+  "version": "0.0.2",
+  "description": "x-tool",
+  "author": "xz",
+  "private": true,
+  "main": "main.js",
+  "bin" : {
+    "easymd": "lib/index.js"
+  },
+  "scripts": {
+    
+  },
+  "dependencies": {
+    "commander": "^2.17.0",
+    "crawler": "^1.1.4",
+    "curl": "^0.1.4",
+    "jsdom": "^9.4.1",
+    "mkdirp": "^0.5.1"
+  },
+  "devDependencies": {
+    
+  },
+  "engines": {
+    "node": ">= 6.9.0",
+    "npm": ">= 3.0.0"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "iOS >= 7"
+  ]
+}
