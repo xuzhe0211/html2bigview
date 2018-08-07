@@ -5,12 +5,10 @@
   "author": "xz",
   "private": true,
   "main": "main.js",
-  "bin" : {
+  "bin": {
     "easymd": "lib/index.js"
   },
-  "scripts": {
-    
-  },
+  "scripts": {},
   "dependencies": {
     "commander": "^2.17.0",
     "crawler": "^1.1.4",
@@ -18,9 +16,7 @@
     "jsdom": "^9.4.1",
     "mkdirp": "^0.5.1"
   },
-  "devDependencies": {
-    
-  },
+  "devDependencies": {},
   "engines": {
     "node": ">= 6.9.0",
     "npm": ">= 3.0.0"
