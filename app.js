@@ -1,71 +1,48 @@
+
 var Crawler = require("crawler");
 var jsdom = require('jsdom');
-var utils = require('./utils')
-
-var current_book = { }
 
 var c = new Crawler({
+    maxConnections : 10,
     jQuery: jsdom,
-    maxConnections : 100,
-    forceUTF8:true,
-  // incomingEncoding: 'gb2312',
     // This will be called for each crawled page
-    callback : function (error, result, $) {
-      var urls = $('.directoryArea');
-      console.log(urls)
-      
-      utils.mkdir('0/330');
-      
-      current_book.title = $('#maininfo h1').text()
-      current_book.author = $('#info p').eq(0).text()
-      current_book.update_time = $('#info p').eq(2).text()
-      current_book.latest_chapter = $('#info p').eq(3).html()
-      current_book.intro = $('#intro').html()
-      current_book.chapters = [];
+    callback : function (error, res, done) {
+        if(error){
+            console.log(error);
+        }else{
+            var $ = res.$;
 
-      for(var i = 0; i< urls.length; i++){
-        var url = urls[i]
+            var html = res.body;
+            // $ is Cheerio by default
+            //a lean implementation of core jQuery designed specifically for the server
+            console.log($('.bp')[0].innerHTML);
+            var parentContainer = $('.bp').parent()
+            var parentClass = parentContainer[0].className
+            var bparr = $('.bp');
+            $('.bp').remove()
+            var body = $('body').html()
+            var placeHolders = []
 
-        var _url = $(url).attr('href')+"";
-        var num = _url.replace('.html','');
-        var title = $(url).text();
+            $.each(bparr, function (i, v) {
+              let name = v.className.split(' ')[0];
+              placeHolders.push(name)
+            })
+            console.log(placeHolders)
+            var str = ''
+            for(var i in placeHolders){
+              str +=  '<div class='+placeHolders[i]+'></div>'
+            }
+            $('.'+parentClass).html(str)
+
+            
+            console.log($(parentClass).html())
 
 
-        current_book.chapters.push({
-          num: num,
-          title: title,
-          url: _url
-        })
-      }
 
-      utils.write_config(current_book);
-      // console.log(current_book)
-      // 为了演示，模拟一个，不如1k多条，慢死了
-      var chapter = { num: '4063307', title: '第一千两百五十二章 现世！', url: '4063307.html' }
-      one(chapter);
+        }
+        done();
     }
 });
 
-function one(chapter){
-  console.log(chapter)
-  c.queue([{
-    uri: 'http://www.biquku.com/0/330/' + chapter.num + '.html',
-    jQuery: jsdom,
-    forceUTF8:true,
-    // The global callback won't be called
-    callback: function (error, result, $) {
-      var content = $('#content').html();
-      console.log(content)
-      
-      utils.write_chapter(chapter, content);
-      
-      process.exit()
-    }
-  }]);
-}
-
-function start(){
-  c.queue('https://www.booktxt.net/4_4579/');
-}
-
-start()
+// Queue just one URL, with default callback
+c.queue('http://127.0.0.1:8080/demo.html');
